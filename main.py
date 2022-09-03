@@ -2,7 +2,7 @@ import logging
 
 import RPi.GPIO as GPIO
 import time
-import homebridge_interface as hb
+import homebridge as hb
 from datetime import datetime
 import logging
 from logging import handlers
