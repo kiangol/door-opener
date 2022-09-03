@@ -50,18 +50,20 @@ try:
     # Main loop
     while True:
         now = datetime.now()
-        val = (rc_time(pin_to_circuit) + rc_time(pin_to_circuit)) / 2
+        v1, v2 = rc_time(pin_to_circuit), rc_time(pin_to_circuit)
+        val = (v1+v2)/2
         if val < 2000:
             time_since_last_activation = (now - last_activated).seconds
             if time_since_last_activation < 10:
                 log.info("Skipping duplicate activation")
                 continue
             log.info(f"Activating switch {val}")
+            hb.send_notification()
             last_activated = datetime.now()
             hb.activate_switch()
             time.sleep(1)
             hb.activate_switch()
-        log.debug(rc_time(pin_to_circuit))
+        log.debug(f"V1:{v1} | V2:{v2} -> {val}")
 except KeyboardInterrupt:
     pass
 finally:
