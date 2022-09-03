@@ -8,7 +8,7 @@ import logging
 from logging import handlers
 
 LOG_FILENAME = "log.out"
-formatter = logging.Formatter("%(asctime)s %(message)s")
+formatter = logging.Formatter("%(asctime)s - %(message)s")
 
 handler = handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=10*1024*1024, backupCount=2)
 handler.setFormatter(formatter)
@@ -52,7 +52,7 @@ try:
         now = datetime.now()
         v1, v2 = rc_time(pin_to_circuit), rc_time(pin_to_circuit)
         val = (v1+v2)/2
-        if v1 < 2000 and v2 < 2000:
+        if v1 < 1200 and v2 < 1200:
             time_since_last_activation = (now - last_activated).seconds
             if time_since_last_activation < 10:
                 log.info("Skipping duplicate activation")
@@ -63,7 +63,7 @@ try:
             hb.activate_switch()
             time.sleep(1)
             hb.activate_switch()
-        log.debug(f"V1:{v1} | V2:{v2} -> {val}")
+        log.debug(f"V1:{v1} | V2:{v2} - avg:{val}")
 except KeyboardInterrupt:
     pass
 finally:
