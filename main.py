@@ -52,12 +52,12 @@ try:
         now = datetime.now()
         v1, v2 = rc_time(pin_to_circuit), rc_time(pin_to_circuit)
         val = (v1+v2)/2
-        if val < 1500:
+        if v1 < 2000 and v2 < 2000:
             time_since_last_activation = (now - last_activated).seconds
             if time_since_last_activation < 10:
                 log.info("Skipping duplicate activation")
                 continue
-            log.info(f"Activating switch {val} | (v1:{v1},v2:{v2}")
+            log.info(f"Activating switch {val} | (v1:{v1},v2:{v2})")
             hb.send_notification()
             last_activated = datetime.now()
             hb.activate_switch()
