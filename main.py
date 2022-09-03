@@ -31,7 +31,7 @@ def rc_time(pin_to_circuit):
     # Output on the pin for
     GPIO.setup(pin_to_circuit, GPIO.OUT)
     GPIO.output(pin_to_circuit, GPIO.LOW)
-    time.sleep(1)
+    time.sleep(0.5)
 
     # Change the pin back to input
     GPIO.setup(pin_to_circuit, GPIO.IN)
@@ -50,7 +50,7 @@ try:
     # Main loop
     while True:
         now = datetime.now()
-        val = rc_time(pin_to_circuit)
+        val = (rc_time(pin_to_circuit) + rc_time(pin_to_circuit)) / 2
         if val < 2000:
             time_since_last_activation = (now - last_activated).seconds
             if time_since_last_activation < 10:
