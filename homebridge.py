@@ -35,6 +35,7 @@ def send_notification():
     url = 'https://api.pushcut.io/g6V-0NfXxpldSJqfvMgTK/notifications/Arrival'
     r = session.get(url)
 
+
 def activate_switch():
     validate_access_token()
     url = base_url + f'/accessories/4e7c0b7fa75d76f73a0cc14028fe05c1f4ba50716c4cfb00f32566f57a3c286c'
@@ -43,4 +44,3 @@ def activate_switch():
         "value": "1"
     }
     r = session.put(url, data=payload)
-    print(r.content)
