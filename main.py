@@ -66,7 +66,8 @@ try:
             hb.activate_switch()
             time.sleep(1)
             hb.activate_switch()
-        log.debug(f"V1:{v1} | V2:{v2} - avg:{val}")
+            if now.time().second % 5 == 0:
+                log.debug(f"V1:{v1} | V2:{v2} - avg:{val}")
 except KeyboardInterrupt as k:
     log.error(k)
     pass
