@@ -31,7 +31,7 @@ def rc_time(pin_to_circuit):
     # Output on the pin for
     GPIO.setup(pin_to_circuit, GPIO.OUT)
     GPIO.output(pin_to_circuit, GPIO.LOW)
-    time.sleep(0.1)
+    time.sleep(0.5)
 
     # Change the pin back to input
     GPIO.setup(pin_to_circuit, GPIO.IN)
@@ -39,16 +39,21 @@ def rc_time(pin_to_circuit):
     # Count until the pin goes high
     while (GPIO.input(pin_to_circuit) == GPIO.LOW):
         count += 1
+        if count > 10000:
+            return count
 
     return count
 
 
 # Catch when script is interrupted, cleanup correctly
 last_activated = datetime.now()
+c = 0
 
 try:
     # Main loop
     while True:
+        c+=1
+        print(c%10 == 0)
         now = datetime.now()
         v1, v2 = rc_time(pin_to_circuit), rc_time(pin_to_circuit)
         val = (v1+v2)/2
