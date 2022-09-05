@@ -37,9 +37,9 @@ def rc_time(pin_to_circuit=ldr_pin):
 
     # Count until the pin goes high
     while GPIO.input(pin_to_circuit) == GPIO.LOW:
-        count += 1
         if count > 10000:
             return count
+        count += 1
 
     return count
 
