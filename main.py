@@ -47,6 +47,7 @@ def rc_time(pin_to_circuit=ldr_pin):
 last_activated = datetime.now()
 
 try:
+    log.info("Starting reading...")
     while True:
         now = datetime.now()
 
