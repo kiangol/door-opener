@@ -52,8 +52,6 @@ c = 0
 try:
     # Main loop
     while True:
-        c+=1
-        print(c%10 == 0)
         now = datetime.now()
         v1, v2 = rc_time(pin_to_circuit), rc_time(pin_to_circuit)
         val = (v1+v2)/2
@@ -69,7 +67,10 @@ try:
             time.sleep(1)
             hb.activate_switch()
         log.debug(f"V1:{v1} | V2:{v2} - avg:{val}")
-except KeyboardInterrupt:
+except KeyboardInterrupt as k:
+    log.error(k)
     pass
+except Exception as e:
+    log.error("Error occurred", e)
 finally:
     GPIO.cleanup()
