@@ -34,6 +34,7 @@ def get_accessory(uuid=''):
 def send_notification():
     url = 'https://api.pushcut.io/g6V-0NfXxpldSJqfvMgTK/notifications/Arrival'
     r = session.get(url)
+    return r
 
 
 def activate_switch():
@@ -44,3 +45,4 @@ def activate_switch():
         "value": "1"
     }
     r = session.put(url, data=payload)
+    return r

@@ -62,11 +62,11 @@ try:
                 continue
 
             log.info(f"Activating switch {val} | (v1:{v1},v2:{v2})")
-            hb.send_notification()
+            log.info(hb.send_notification().content)
             last_activated = datetime.now()
-            hb.activate_switch()
+            log.info(hb.activate_switch())
             time.sleep(1)
-            hb.activate_switch()
+            log.info(hb.activate_switch())
 
 except KeyboardInterrupt as k:
     log.error("Error occurred", k)
