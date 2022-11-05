@@ -15,6 +15,7 @@ def get_access_token():
         "Authorization": "Bearer " + access_token
     })
 
+
     return access_token
 
 
@@ -40,7 +41,7 @@ def send_notification():
 
 def activate_switch():
     validate_access_token()
-    url = base_url + f'/accessories/4e7c0b7fa75d76f73a0cc14028fe05c1f4ba50716c4cfb00f32566f57a3c286c'
+    url = base_url + f'/accessories/14b7ef84237c7d0ee003fce089e7520189575340fa36482aeda5ff581ab8dace'
     payload = {
         "characteristicType": "On",
         "value": "1"
