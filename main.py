@@ -2,6 +2,7 @@ import logging
 import os
 import time
 from datetime import datetime
+from logging.handlers import RotatingFileHandler
 
 import RPi.GPIO as GPIO
 
@@ -9,13 +10,15 @@ import homebridge as hb
 
 LOG_DIR = os.path.join(os.path.normpath(os.getcwd()), 'logs')
 LOG_FILENAME = os.path.join(LOG_DIR, "log.out")
+handler = RotatingFileHandler(LOG_FILENAME, maxBytes=1000, backupCount=3)
 logging.basicConfig(
     format='%(asctime)s %(message)s',
     datefmt='%d-%m-%Y %H:%M:%S',
     level=logging.DEBUG,
-    filename=LOG_FILENAME
 )
 
+log = logging.getLogger("Door Opener Log")
+log.addHandler(handler)
 
 GPIO.setmode(GPIO.BOARD)
 
