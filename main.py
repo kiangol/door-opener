@@ -24,7 +24,7 @@ GPIO.setmode(GPIO.BOARD)
 
 # define the pin that goes to the circuit
 ldr_pin = 7
-# Higher value -> less sensitivity. Default 1100
+# Higher value -> higher sensitivity. Default 1100
 activation_threshold = 1100
 # Time to wait in seconds before activating switch again,
 # if call is still in progress.
@@ -52,7 +52,7 @@ def rc_time(pin_to_circuit=ldr_pin):
 
 
 def should_activate(val, threshold=activation_threshold):
-    return val > threshold
+    return val < threshold
 
 def main():
     last_activated = datetime.now()
