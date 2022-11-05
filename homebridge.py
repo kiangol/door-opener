@@ -4,6 +4,7 @@ import json
 session = requests.Session()
 base_url = 'http://raspberrypi.local:8581/api'
 
+
 def get_access_token():
     url = f'{base_url}/auth/login'
     data = {'username': 'admin', 'password': 'admin'}
