@@ -6,7 +6,10 @@ import homebridge as hb
 from datetime import datetime
 import logging
 from logging import handlers
+import os
 
+LOG_DIR = os.path.join(os.path.normpath(os.getcwd()), 'logs')
+LOG_FILENAME = os.path.join(LOG_DIR, "log.out")
 LOG_FILENAME = "log.out"
 formatter = logging.Formatter("%(asctime)s - %(message)s")
 
