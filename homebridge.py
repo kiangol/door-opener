@@ -3,6 +3,8 @@ import json
 
 session = requests.Session()
 base_url = 'http://raspberrypi.local:8581/api'
+switch_id = '14b7ef84237c7d0ee003fce089e7520189575340fa36482aeda5ff581ab8dace'
+
 
 def get_access_token():
     url = f'{base_url}/auth/login'
@@ -13,6 +15,7 @@ def get_access_token():
     session.headers.update({
         "Authorization": "Bearer " + access_token
     })
+
 
     return access_token
 
@@ -39,7 +42,7 @@ def send_notification():
 
 def activate_switch():
     validate_access_token()
-    url = base_url + f'/accessories/4e7c0b7fa75d76f73a0cc14028fe05c1f4ba50716c4cfb00f32566f57a3c286c'
+    url = base_url + f'/accessories/{switch_id}'
     payload = {
         "characteristicType": "On",
         "value": "1"
