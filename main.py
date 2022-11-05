@@ -48,6 +48,9 @@ def rc_time(pin_to_circuit=ldr_pin):
     return count
 
 
+def should_activate(val, threshold=activation_threshold):
+    return val > threshold
+
 def main():
     last_activated = datetime.now()
     try:
@@ -59,7 +62,7 @@ def main():
             val = (v1 + v2) / 2
             logging.debug(f"V1:{v1} | V2:{v2} - avg:{val}")
 
-            if v1 < activation_threshold and v2 < activation_threshold:
+            if should_activate(v1) and should_activate(v2):
                 time_since_last_activation = (now - last_activated).seconds
                 if time_since_last_activation < call_timeout:
                     logging.info("Skipping duplicate activation")
