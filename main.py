@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 
 import homebridge as hb
 
-LOG_DIR = os.path.join(os.path.normpath(os.getcwd()), 'logs')
+LOG_DIR = os.path.join('/home', 'pi', 'logs')
 LOG_FILENAME = os.path.join(LOG_DIR, "log.out")
 handler = RotatingFileHandler(LOG_FILENAME, maxBytes=10240000, backupCount=3)
 logging.basicConfig(
