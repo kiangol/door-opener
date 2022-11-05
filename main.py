@@ -11,7 +11,7 @@ LOG_DIR = os.path.join(os.path.normpath(os.getcwd()), 'logs')
 LOG_FILENAME = os.path.join(LOG_DIR, "log.out")
 logging.basicConfig(
     format='%(asctime)s %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
+    datefmt='%d-%m-%Y %H:%M:%S',
     level=logging.DEBUG,
     filename=LOG_FILENAME
 )
@@ -75,7 +75,7 @@ def main():
                 logging.info(hb.activate_switch())
 
     except KeyboardInterrupt as k:
-        logging.error("Error occurred", k)
+        logging.error(k)
         pass
     except Exception as e:
         logging.error("Error occurred", e)
