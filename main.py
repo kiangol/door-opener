@@ -56,9 +56,9 @@ def should_activate(val, threshold=activation_threshold):
 
 def main():
     last_activated = datetime.now()
+    logging.info("Starting reading...")
     while True:
         try:
-            logging.info("Starting reading...")
             now = datetime.now()
 
             v1, v2 = rc_time(), rc_time()
