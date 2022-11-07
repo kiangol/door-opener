@@ -53,11 +53,12 @@ def rc_time(pin_to_circuit=ldr_pin):
 def should_activate(val, threshold=activation_threshold):
     return val < threshold
 
+
 def main():
     last_activated = datetime.now()
-    try:
-        logging.info("Starting reading...")
-        while True:
+    while True:
+        try:
+            logging.info("Starting reading...")
             now = datetime.now()
 
             v1, v2 = rc_time(), rc_time()
@@ -79,14 +80,10 @@ def main():
                 time.sleep(1)
                 logging.info(hb.activate_switch())
 
-    except KeyboardInterrupt as k:
-        logging.error(k)
-        pass
-    except Exception as e:
-        logging.error("Error occurred", e)
-        pass
-    finally:
-        GPIO.cleanup()
+        except KeyboardInterrupt as k:
+            logging.info(k)
+        except Exception as ex:
+            logging.error("Error occurred", e)
 
 
 if __name__ == '__main__':
@@ -94,3 +91,4 @@ if __name__ == '__main__':
         main()
     except Exception as e:
         logging.error(e)
+        exit(1)
