@@ -51,7 +51,7 @@ def activate_switch():
     }
     payload_off = {
         "characteristicType": "On",
-        "value": "1"
+        "value": "0"
     }
     r = session.put(url, data=payload_on)
     time.sleep(0.5)
