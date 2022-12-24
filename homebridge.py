@@ -1,3 +1,5 @@
+import time
+
 import requests
 import json
 
@@ -43,9 +45,15 @@ def send_notification():
 def activate_switch():
     validate_access_token()
     url = base_url + f'/accessories/{switch_id}'
-    payload = {
+    payload_on = {
         "characteristicType": "On",
         "value": "1"
     }
-    r = session.put(url, data=payload)
+    payload_off = {
+        "characteristicType": "On",
+        "value": "1"
+    }
+    r = session.put(url, data=payload_on)
+    time.sleep(0.5)
+    r = session.put(url, data=payload_off)
     return r
