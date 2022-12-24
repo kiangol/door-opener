@@ -61,14 +61,16 @@ def main():
         try:
             now = datetime.now()
 
-            v1, v2 = rc_time(), rc_time()
+            v1 = rc_time()
+            v2 = rc_time()
             val = (v1 + v2) / 2
+
             logging.debug(f"V1:{v1} | V2:{v2} - avg:{val}")
 
             if should_activate(v1) and should_activate(v2):
                 time_since_last_activation = (now - last_activated).seconds
                 if time_since_last_activation < call_timeout:
-                    logging.info("Skipping duplicate activation")
+                    logging.info(f"Skipping. Last:{last_activated}, {time_since_last_activation} s ago")
                     continue
 
                 logging.info(f"Activating switch {val} | (v1:{v1},v2:{v2})")
