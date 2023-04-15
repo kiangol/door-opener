@@ -28,7 +28,7 @@ activation_threshold = 3000
 # if call is still in progress.
 call_timeout = os.environ.get('DOOROPENER_RETRY_TIMEOUT')
 if call_timeout is None:
-    call_timeout = 30
+    call_timeout = 20
 else:
     call_timeout = int(call_timeout)
 
