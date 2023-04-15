@@ -28,6 +28,7 @@ activation_threshold = 3000
 # if call is still in progress.
 call_timeout = os.environ.get('DOOROPENER_RETRY_TIMEOUT')
 if call_timeout is None:
+    logging.info(f"Could not find DOOROPENER_RETRY_TIMEOUT in environment, setting default value. {os.environ.get('DOOROPENER_RETRY_TIMEOUT')}")
     call_timeout = 20
 else:
     call_timeout = int(call_timeout)
