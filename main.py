@@ -18,7 +18,6 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-
 GPIO.setmode(GPIO.BOARD)
 
 # define the pin that goes to the circuit
@@ -27,7 +26,11 @@ ldr_pin = 7
 activation_threshold = 3000
 # Time to wait in seconds before activating switch again,
 # if call is still in progress.
-call_timeout = 30
+call_timeout = os.environ.get('DOOROPENER_RETRY_TIMEOUT')
+if call_timeout is None:
+    call_timeout = 30
+else:
+    call_timeout = int(call_timeout)
 
 
 def rc_time(pin_to_circuit=ldr_pin):
@@ -76,11 +79,6 @@ def main():
                 logging.info(f"Activating switch {val} | (v1:{v1},v2:{v2})")
                 logging.info(hb.send_notification_hass().content)
                 last_activated = datetime.now()
-
-                # sometimes bluetooth connection fails on first call, therefore two activation calls.
-#                logging.info(hb.activate_switch())
-#                time.sleep(1)
-#                logging.info(hb.activate_switch())
 
         except KeyboardInterrupt as k:
             logging.info(k)
