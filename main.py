@@ -27,7 +27,7 @@ ldr_pin = 7
 activation_threshold = 3000
 # Time to wait in seconds before activating switch again,
 # if call is still in progress.
-call_timeout = 10
+call_timeout = 30
 
 
 def rc_time(pin_to_circuit=ldr_pin):
