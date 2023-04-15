@@ -18,7 +18,6 @@ def get_access_token():
         "Authorization": "Bearer " + access_token
     })
 
-
     return access_token
 
 
@@ -41,10 +40,13 @@ def send_notification():
     r = session.get(url)
     return r
 
+
 def send_notification_hass():
-   url = 'http://homeassistant1461.duckdns.org:8123/api/webhook/dorapner-I1QiuVIRrMX3XeXHtIxJwZPI'
-   r = session.post(url, data={'k':'v'})
-   return r
+    url = 'http://homeassistant.local:8123/api/webhook/dorapner-I1QiuVIRrMX3XeXHtIxJwZPI'
+    r = session.post(url, data={'k': 'v'})
+    return r
+
+
 def activate_switch():
     validate_access_token()
     url = base_url + f'/accessories/{switch_id}'
