@@ -23,7 +23,7 @@ GPIO.setmode(GPIO.BOARD)
 # define the pin that goes to the circuit
 ldr_pin = 7
 # Higher value -> higher sensitivity. Default 1100
-activation_threshold = 3000
+activation_threshold = 2000
 # Time to wait in seconds before activating switch again,
 # if call is still in progress.
 call_timeout = os.environ.get('DOOROPENER_RETRY_TIMEOUT')
