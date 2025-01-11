@@ -50,7 +50,7 @@ def activate_switch():
         "value": "1"
     }
     payload_off = {
-        "characteristicType": "On",
+        "characteristicType": "Off",
         "value": "0"
     }
     r = session.put(url, data=payload_on)
