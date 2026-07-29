@@ -41,9 +41,9 @@ def send_notification():
     return r
 
 
-def send_notification_hass():
+def send_notification_hass(value=0):
     url = 'http://homeassistant.local:8123/api/webhook/dorapner-I1QiuVIRrMX3XeXHtIxJwZPI'
-    r = session.post(url, data={'k': 'v'})
+    r = session.post(url, data={'value': value})
     return r
 
 
