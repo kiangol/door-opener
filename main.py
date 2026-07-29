@@ -78,7 +78,7 @@ def main():
                     continue
 
                 logging.info(f"Activating switch {val} | (v1:{v1},v2:{v2})")
-                logging.info(hb.send_notification_hass().content)
+                logging.info(hb.send_notification_hass(val).content)
                 last_activated = datetime.now()
 
         except KeyboardInterrupt as k:
