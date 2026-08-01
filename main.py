@@ -6,7 +6,7 @@ from logging.handlers import RotatingFileHandler
 
 import RPi.GPIO as GPIO
 
-import homebridge as hb
+import ha_client as ha
 
 LOG_DIR = os.path.join('/home', 'pi', 'logs')
 LOG_FILENAME = os.path.join(LOG_DIR, "log.out")
@@ -18,16 +18,20 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-
 GPIO.setmode(GPIO.BOARD)
 
 # define the pin that goes to the circuit
 ldr_pin = 7
 # Higher value -> higher sensitivity. Default 1100
-activation_threshold = 1100
+activation_threshold = 2000
 # Time to wait in seconds before activating switch again,
 # if call is still in progress.
-call_timeout = 10
+call_timeout = os.environ.get('DOOROPENER_RETRY_TIMEOUT')
+if call_timeout is None:
+    logging.info(f"Could not find DOOROPENER_RETRY_TIMEOUT in environment, setting default value. {os.environ.get('DOOROPENER_RETRY_TIMEOUT')}")
+    call_timeout = 5
+else:
+    call_timeout = int(call_timeout)
 
 
 def rc_time(pin_to_circuit=ldr_pin):
@@ -56,7 +60,7 @@ def should_activate(val, threshold=activation_threshold):
 
 def main():
     last_activated = datetime.now()
-    logging.info("Starting reading...")
+    logging.info(f"Starting reading at {last_activated}... RETRY_TIMEOUT:{call_timeout}")
     while True:
         try:
             now = datetime.now()
@@ -74,13 +78,8 @@ def main():
                     continue
 
                 logging.info(f"Activating switch {val} | (v1:{v1},v2:{v2})")
-                logging.info(hb.send_notification().content)
+                logging.info(ha.send_notification_hass(val).content)
                 last_activated = datetime.now()
-
-                # sometimes bluetooth connection fails on first call, therefore two activation calls.
-                logging.info(hb.activate_switch())
-                time.sleep(1)
-                logging.info(hb.activate_switch())
 
         except KeyboardInterrupt as k:
             logging.info(k)
@@ -94,3 +93,5 @@ if __name__ == '__main__':
     except Exception as e:
         logging.error(e)
         exit(1)
+    finally:
+        logging.info("Shutting down")
