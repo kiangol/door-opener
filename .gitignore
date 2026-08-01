@@ -2,4 +2,4 @@
 *.out.*
 .idea
 __pycache__/
-esp8266/config.h
+config.h
