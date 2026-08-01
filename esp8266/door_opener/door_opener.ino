@@ -7,8 +7,6 @@
 
 namespace {
 
-constexpr unsigned long SENSOR_DISCHARGE_MS = 500;
-constexpr unsigned long SENSOR_TIMEOUT_COUNTS = 10000;
 constexpr unsigned long WIFI_RETRY_INTERVAL_MS = 10000;
 
 unsigned long lastActivation = 0;
@@ -19,27 +17,7 @@ void setActivationIndicator(bool active) {
 }
 
 unsigned long measureLightLevel() {
-  unsigned long count = 0;
-
-  pinMode(LDR_PIN, OUTPUT);
-  digitalWrite(LDR_PIN, LOW);
-  delay(SENSOR_DISCHARGE_MS);
-
-  pinMode(LDR_PIN, INPUT);
-  while (digitalRead(LDR_PIN) == LOW) {
-    ++count;
-    if (count >= SENSOR_TIMEOUT_COUNTS) {
-      break;
-    }
-
-    // Keep the ESP8266 watchdog serviced if the sensor remains below the
-    // input threshold for a long time.
-    if ((count & 0xFF) == 0) {
-      yield();
-    }
-  }
-
-  return count;
+  return analogRead(A0);
 }
 
 bool shouldActivate(unsigned long value) {
@@ -136,7 +114,7 @@ void loop() {
       Serial.println("Skipping activation: retry timeout has not elapsed");
     } else {
       Serial.printf("Activating switch: %lu\n", average);
-      sendHomeAssistantNotification(average);
+//      sendHomeAssistantNotification(average);
       lastActivation = now;
     }
   }

@@ -1,9 +1,5 @@
 #pragma once
 
-// Use the GPIO number, not the NodeMCU D-pin label.
-// GPIO5 is NodeMCU D1 and is generally safe for boot.
-constexpr uint8_t LDR_PIN = 5;
-
 constexpr char WIFI_SSID[] = "replace-with-wifi-name";
 constexpr char WIFI_PASSWORD[] = "replace-with-wifi-password";
 constexpr char DEVICE_HOSTNAME[] = "door-opener";
@@ -13,9 +9,8 @@ constexpr char DEVICE_HOSTNAME[] = "door-opener";
 constexpr char HOME_ASSISTANT_WEBHOOK_URL[] =
     "http://homeassistant.local:8123/api/webhook/replace-webhook-id";
 
-// This is deliberately the same starting point as the Raspberry Pi version.
-// ESP8266 GPIO loop counts are not directly comparable, so calibrate this
-// value using the serial monitor after installation.
-constexpr unsigned long ACTIVATION_THRESHOLD = 2000;
+// NodeMCU A0 readings are normally 0-1023. Calibrate this using the serial
+// monitor with the LDR in both relevant light conditions.
+constexpr unsigned long ACTIVATION_THRESHOLD = 512;
 constexpr unsigned long RETRY_TIMEOUT_MS = 5000;
 constexpr unsigned long WIFI_CONNECT_TIMEOUT_MS = 20000;
