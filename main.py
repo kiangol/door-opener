@@ -6,7 +6,7 @@ from logging.handlers import RotatingFileHandler
 
 import RPi.GPIO as GPIO
 
-import homebridge as hb
+import ha_client as ha
 
 LOG_DIR = os.path.join('/home', 'pi', 'logs')
 LOG_FILENAME = os.path.join(LOG_DIR, "log.out")
@@ -78,7 +78,7 @@ def main():
                     continue
 
                 logging.info(f"Activating switch {val} | (v1:{v1},v2:{v2})")
-                logging.info(hb.send_notification_hass(val).content)
+                logging.info(ha.send_notification_hass(val).content)
                 last_activated = datetime.now()
 
         except KeyboardInterrupt as k:
