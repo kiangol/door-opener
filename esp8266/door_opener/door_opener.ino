@@ -14,6 +14,10 @@ constexpr unsigned long WIFI_RETRY_INTERVAL_MS = 10000;
 unsigned long lastActivation = 0;
 unsigned long lastWiFiAttempt = 0;
 
+void setActivationIndicator(bool active) {
+  digitalWrite(LED_BUILTIN, active ? LOW : HIGH);
+}
+
 unsigned long measureLightLevel() {
   unsigned long count = 0;
 
@@ -104,6 +108,8 @@ void setup() {
   Serial.begin(115200);
   delay(100);
   Serial.println();
+  pinMode(LED_BUILTIN, OUTPUT);
+  setActivationIndicator(false);
   Serial.printf("Starting door opener, threshold: %lu, retry timeout: %lu ms\n",
                 ACTIVATION_THRESHOLD, RETRY_TIMEOUT_MS);
 
@@ -121,7 +127,10 @@ void loop() {
   Serial.printf("LDR: %lu | %lu | average: %lu\n",
                 firstReading, secondReading, average);
 
-  if (shouldActivate(firstReading) && shouldActivate(secondReading)) {
+  const bool belowActivationThreshold = shouldActivate(average);
+  setActivationIndicator(belowActivationThreshold);
+
+  if (belowActivationThreshold) {
     const unsigned long now = millis();
     if (lastActivation != 0 && now - lastActivation < RETRY_TIMEOUT_MS) {
       Serial.println("Skipping activation: retry timeout has not elapsed");
