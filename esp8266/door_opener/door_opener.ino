@@ -120,4 +120,5 @@ void loop() {
   }
 
   yield();
+  delay(500);
 }
