@@ -17,11 +17,11 @@ void setActivationIndicator(bool active) {
 }
 
 unsigned long measureLightLevel() {
-  return analogRead(A0);
+  return 1024 - analogRead(A0);
 }
 
 bool shouldActivate(unsigned long value) {
-  return value < ACTIVATION_THRESHOLD;
+  return value > ACTIVATION_THRESHOLD;
 }
 
 void connectToWiFi() {
@@ -102,23 +102,23 @@ void loop() {
   const unsigned long secondReading = measureLightLevel();
   const unsigned long average = (firstReading + secondReading) / 2;
 
-  Serial.printf("LDR: %lu | %lu | average: %lu\n",
+  Serial.printf("r1: %lu | r2: %lu | avg: %lu\n",
                 firstReading, secondReading, average);
 
-  const bool belowActivationThreshold = shouldActivate(average);
-  setActivationIndicator(belowActivationThreshold);
+  const bool aboveActivationThreshold = shouldActivate(average);
+  setActivationIndicator(aboveActivationThreshold);
 
-  if (belowActivationThreshold) {
+  if (aboveActivationThreshold) {
     const unsigned long now = millis();
     if (lastActivation != 0 && now - lastActivation < RETRY_TIMEOUT_MS) {
       Serial.println("Skipping activation: retry timeout has not elapsed");
     } else {
       Serial.printf("Activating switch: %lu\n", average);
-//      sendHomeAssistantNotification(average);
+      sendHomeAssistantNotification(average);
       lastActivation = now;
     }
   }
 
   yield();
-  delay(500);
+  delay(1000);
 }
