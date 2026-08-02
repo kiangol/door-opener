@@ -8,6 +8,8 @@ constexpr char DEVICE_HOSTNAME[] = "door-opener";
 // support and may not resolve reliably in every ESP8266 setup.
 constexpr char HOME_ASSISTANT_WEBHOOK_URL[] =
     "http://homeassistant.local:8123/api/webhook/replace-webhook-id";
+constexpr char READING_WEBHOOK_URL[] =
+    "http://homeassistant.local:8123/api/webhook/replace-reading-webhook-id";
 
 // NodeMCU A0 readings are normally 0-1023. Calibrate this using the serial
 // monitor with the LDR in both relevant light conditions.

@@ -5,14 +5,18 @@ voltage through the NodeMCU A0 analog input, takes two readings, and posts
 `{ "value": <average> }` to the Home Assistant webhook when both readings are
 below the threshold.
 
+The averaged reading is also posted to `READING_WEBHOOK_URL` every 20 seconds
+using the same JSON body, independently of the activation cooldown.
+
 ## Setup
 
 1. Install the ESP8266 board package in the Arduino IDE.
 2. Select a NodeMCU 1.0 (ESP-12E Module) board.
 3. Copy `config.h.example` to `config.h`.
 4. Set the Wi-Fi credentials and Home Assistant webhook URL in `config.h`.
-5. Connect the LDR voltage output to A0.
-6. Upload `door_opener.ino` and open the serial monitor at 115200 baud.
+5. Set `READING_WEBHOOK_URL` to the newly created Home Assistant webhook.
+6. Connect the LDR voltage output to A0.
+7. Upload `door_opener.ino` and open the serial monitor at 115200 baud.
 
 Use a fixed IP address for Home Assistant in the webhook URL unless mDNS
 resolution of `homeassistant.local` is known to work on the network.

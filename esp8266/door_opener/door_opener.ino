@@ -8,9 +8,11 @@
 namespace {
 
 constexpr unsigned long WIFI_RETRY_INTERVAL_MS = 10000;
+constexpr unsigned long READING_POST_INTERVAL_MS = 20000;
 
 unsigned long lastActivation = 0;
 unsigned long lastWiFiAttempt = 0;
+unsigned long lastReadingSent = 0;
 
 void setActivationIndicator(bool active) {
   digitalWrite(LED_BUILTIN, active ? LOW : HIGH);
@@ -54,16 +56,17 @@ void connectToWiFi() {
   }
 }
 
-void sendHomeAssistantNotification(unsigned long value) {
+void sendHomeAssistantPost(const char* webhookUrl, unsigned long value,
+                           const char* description) {
   if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Skipping notification: Wi-Fi is not connected");
+    Serial.printf("Skipping %s: Wi-Fi is not connected\n", description);
     return;
   }
 
   WiFiClient client;
   HTTPClient http;
-  if (!http.begin(client, HOME_ASSISTANT_WEBHOOK_URL)) {
-    Serial.println("Could not initialize Home Assistant HTTP client");
+  if (!http.begin(client, webhookUrl)) {
+    Serial.printf("Could not initialize Home Assistant client for %s\n", description);
     return;
   }
 
@@ -71,11 +74,12 @@ void sendHomeAssistantNotification(unsigned long value) {
   const String body = String("{\"value\":") + value + "}";
   const int status = http.POST(body);
 
-  Serial.printf("Home Assistant response: %d\n", status);
+  Serial.printf("Home Assistant %s response: %d\n", description, status);
   if (status > 0) {
     Serial.println(http.getString());
   } else {
-    Serial.printf("Home Assistant request failed: %s\n", http.errorToString(status).c_str());
+    Serial.printf("Home Assistant %s request failed: %s\n", description,
+                  http.errorToString(status).c_str());
   }
   http.end();
 }
@@ -114,11 +118,16 @@ void loop() {
       Serial.println("Skipping activation: retry timeout has not elapsed");
     } else {
       Serial.printf("Activating switch: %lu\n", average);
-      sendHomeAssistantNotification(average);
+      sendHomeAssistantPost(HOME_ASSISTANT_WEBHOOK_URL, average, "activation");
       lastActivation = now;
     }
   }
 
-  yield();
+  const unsigned long now = millis();
+  if (now - lastReadingSent >= READING_POST_INTERVAL_MS) {
+    sendHomeAssistantPost(READING_WEBHOOK_URL, average, "reading");
+    lastReadingSent = now;
+  }
+  
   delay(1000);
 }
